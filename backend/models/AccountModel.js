@@ -19,6 +19,10 @@ const accountSchema = mongoose.Schema({
                 type: Number,
                 required: true,
             },
+            studentId: {
+                type: mongoose.Schema.Types.ObjectId, 
+                ref: 'studentDetails', 
+            },
             paymentDate: {
                 type: Date,
                 default: Date.now,

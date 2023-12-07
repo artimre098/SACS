@@ -15,22 +15,8 @@ router.get('/', async (request, response) => {
         return response.status(500).send({ message: 'Internal Server Error' });
     }
 });
-
-// Route to get accounts by account name
-router.get('/:accountName', async (request, response) => {
-    try {
-        const { accountName } = request.params;
-
-        const accountsWithSameName = await Accounts.find({ accountName });
-        return response.status(200).send(accountsWithSameName);
-    } catch (error) {
-        console.log(error.message);
-        return response.status(500).send({ message: 'Internal Server Error' });
-    }
-});
-
 // Route to get accounts by student ID
-router.get('/:studentId', async (request, response) => {
+router.get('/student/:studentId', async (request, response) => {
     try {
         const { studentId } = request.params;
 
@@ -46,6 +32,21 @@ router.get('/:studentId', async (request, response) => {
         return response.status(500).send({ message: 'Internal Server Error' });
     }
 });
+
+// Route to get accounts by account name
+router.get('/:accountName', async (request, response) => {
+    try {
+        const { accountName } = request.params;
+
+        const accountsWithSameName = await Accounts.find({ accountName });
+        return response.status(200).send(accountsWithSameName);
+    } catch (error) {
+        console.log(error.message);
+        return response.status(500).send({ message: 'Internal Server Error' });
+    }
+});
+
+
 
 router.post('/', async (request, response) => {
     try {
@@ -75,7 +76,7 @@ router.post('/', async (request, response) => {
 
 router.post('/pay/:accountId', async (request, response) => {
     try {
-        const { amountPaid } = request.body;
+        const { amountPaid , studentId} = request.body;
         const { accountId } = request.params;
 
         // Validate if amountPaid is a positive number
@@ -92,6 +93,7 @@ router.post('/pay/:accountId', async (request, response) => {
         // Update the account with the payment
         account.paymentHistory.push({
             amountPaid,
+            studentId,
             paymentDate: new Date(),
         });
 
