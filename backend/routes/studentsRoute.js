@@ -1,5 +1,5 @@
-import { express } from "express";
-import { Students } from './models/StudentDetailModel.js';
+import  express  from "express";
+import  { Students }  from '../models/StudentDetailModel.js';
 
 const router = express.Router();
 
@@ -8,19 +8,19 @@ router.post('/', async (request, response) => {
         if(!request.body.studentID||
             !request.body.fullname ||
             !request.body.email ||
-            !request.body.password ||
             !request.body.gender ||
             !request.body.yearLevel ||
             !request.body.userType 
         ){
             return response.status(400).send({message:'Send all required fields:'});
         }
+        const generatedPassword = await bcrypt.hash(request.body.studentID, 10);
 
         const newStudent = {
             studentID: request.body.studentID,
             fullname: request.body.fullname,
             email: request.body.email,
-            password  : request.body.password,
+            password  : request.body.generatedPassword,
             gender: request.body.gender,
             yearLevel: request.body.yearLevel,
             userType: request.body.userType,
