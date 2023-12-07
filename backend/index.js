@@ -45,11 +45,23 @@ app.post('/students', async (request, response) => {
 
 app.get('/students', async (request, response) => {
     try {
-        const student = await Students.find({});
+        const students = await Students.find({});
         return response.status(200).json({
-            count: student.length,
-            data: student
+            count: students.length,
+            data: students
         });
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+app.get('/students/:id', async (request, response) => {
+    try {
+
+        const { id } = request.params;
+
+        const student = await Students.findById(id);
+        return response.status(200).json(student);
     } catch (error) {
         console.log(error.message);
     }
