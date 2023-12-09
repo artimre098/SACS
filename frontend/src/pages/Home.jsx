@@ -7,12 +7,23 @@ function Home() {
   
   
   const [accounts, setAccounts] = useState([]);
+  const [student,setStudent] = useState([])
   const [balance,setBalance] = useState(0);
   const { studentId } = useParams();
   //console.log('userId:', id);
  
   
-  
+  const fetchStudentData = async () =>{
+    try {
+          
+      const response = await axios.get(`http://localhost:5555/students/${studentId}`)
+      
+      setStudent(response.data);
+      
+  } catch (error) {
+      console.log(error);
+  }
+  }
   const fetchData = async () => {
    
         try {
@@ -46,7 +57,7 @@ useEffect(() => {
 
   return (
     <div className='p-4'>
-     Home
+     <h1 className='text-3xl my-4 text-center font-bold text-blue-800'>Welcome {student.fullname}</h1>
      <h1 className='text-2xl my-4 text-center '> Total Balance: <span className='font-bold'>{balance}</span></h1>
      <AccountsTable accounts={accounts}/>
     
