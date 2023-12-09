@@ -1,7 +1,24 @@
 import  express  from "express";
 import  { Students }  from '../models/StudentDetailModel.js';
+import bcrypt from 'bcrypt'
 
 const router = express.Router();
+
+const hashPassword = (password) =>{
+    return new Promise((resolve , reject) =>{
+        bcrypt.genSalt(12,(err, salt) => {
+            if(err){
+                reject(err)
+            }
+            bcrypt.hash(password, salt, (err,hash) =>{
+                if(err){
+                    reject(err)
+                }
+                resolve(hash)
+            })
+        })
+    })
+}
 
 router.post('/', async (request, response) => {
     try {
@@ -14,13 +31,13 @@ router.post('/', async (request, response) => {
         ){
             return response.status(400).send({message:'Send all required fields:'});
         }
-        const generatedPassword = await bcrypt.hash(request.body.studentID, 10);
-
+        //const generatedPassword = await bcrypt.hash(request.body.studentID, 10);
+        const hashedPassword = await hashPassword(request.body.studentID)
         const newStudent = {
             studentID: request.body.studentID,
             fullname: request.body.fullname,
             email: request.body.email,
-            password  : request.body.generatedPassword,
+            password  : hashedPassword,
             gender: request.body.gender,
             yearLevel: request.body.yearLevel,
             userType: request.body.userType,
@@ -32,6 +49,34 @@ router.post('/', async (request, response) => {
     } catch (error) {
         console.log(error.message);
         
+    }
+});
+
+router.post('/login', async (request, response) => {
+    try {
+        const {studentID, password} = request.body;
+
+        const student = await Students.findOne({studentID});
+        if(!student){
+            return response.json({
+                error : "No user Found"
+            })
+        }
+
+        const match = await comparePasswords(password,student.password)
+
+        if(match){
+            return response.json("Welcome User") 
+        }
+
+        if(!match){
+            return response.json({
+                error : "Password do not match"
+            })    
+        }
+
+    } catch (error) {
+        console.log(error)
     }
 });
 

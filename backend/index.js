@@ -3,6 +3,7 @@ import { PORT, mongoDBURL } from './config.js';
 import mongoose from 'mongoose';
 import studentsRoute from './routes/studentsRoute.js'
 import accountsRoute from './routes/accountsRoute.js'
+import loginRoute from './routes/loginRoute.js'
 import cors from 'cors'
 
 const app = express();
