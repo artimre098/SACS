@@ -70,10 +70,19 @@ router.post('/login', async (request, response) => {
         }
 
         const match = await comparePasswords(password,student.password)
-
+        //console.log(student._id);
         if(match){
             
-            return response.json("Welcome User") 
+            return response.json(
+                {
+                    message: 'Welcome User',
+                    
+                   userId: student._id, // Include the user's ID in the response
+                  }
+                  
+            )
+            
+           
         }
 
         if(!match){
@@ -103,8 +112,10 @@ router.get('/:id', async (request, response) => {
     try {
 
         const { id } = request.params;
-
+        console.log("CATALINAAAAAAA");
+        console.log(id)
         const student = await Students.findById(id);
+        console.log(student)
         return response.status(200).json(student);
     } catch (error) {
         console.log(error.message);

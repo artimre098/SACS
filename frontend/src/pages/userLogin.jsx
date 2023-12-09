@@ -8,6 +8,7 @@ function userLogin() {
     const [data,setData] = useState({
         studentID: '',
         password: '',
+        
     })
     const loginUser = async (e) =>{
         e.preventDefault();
@@ -15,17 +16,24 @@ function userLogin() {
         const {studentID,password} = data;
 
         try {
-            const {data} = await axios.post('http://localhost:5555/students/login',{
+            const {data: responseData} = await axios.post('http://localhost:5555/students/login',{
               studentID,
-              password
+              password,
             })
-            if(data.error){
-                toast.error(data.error)
+            if(responseData.error){
+                toast.error(responseData.error)
             }else{
-                console.log("welcome user");
+              console.log("welcome user");
                setData({})
                toast.success('Login Successful. Welcome!')
-               navigate('/home')
+               const userId = responseData.userId;
+               console.log(userId)
+               if (userId) {
+                // Navigate to the home page with the user's ID as a parameter
+                navigate(`/accounts/student/${userId}`);
+              } else {
+                console.error('User ID not found in the server response.');
+              }
             }
           } catch (error) {
             
