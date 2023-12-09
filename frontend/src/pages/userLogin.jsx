@@ -13,21 +13,25 @@ function userLogin() {
         e.preventDefault();
         
         const {studentID,password} = data;
+
         try {
-          const {data} = await axios.post('/login',{
-            studentID,
-            password
-          })
-          if(data.error){
-              toast.error(data.error)
-          }else{
-             setData({})
-             toast.success('Login Successful. Welcome!')
-             navigate('/dashboard')
+            const {data} = await axios.post('http://localhost:5555/students/login',{
+              studentID,
+              password
+            })
+            if(data.error){
+                toast.error(data.error)
+            }else{
+                console.log("welcome user");
+               setData({})
+               toast.success('Login Successful. Welcome!')
+               navigate('/home')
+            }
+          } catch (error) {
+            
           }
-        } catch (error) {
           
-        }
+        
     }
 
   return (

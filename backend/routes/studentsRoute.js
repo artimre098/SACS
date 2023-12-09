@@ -20,6 +20,10 @@ const hashPassword = (password) =>{
     })
 }
 
+const comparePasswords = (password, hashed) =>{
+    return bcrypt.compare(password,hashed)
+}
+
 router.post('/', async (request, response) => {
     try {
         if(!request.body.studentID||
@@ -54,9 +58,11 @@ router.post('/', async (request, response) => {
 
 router.post('/login', async (request, response) => {
     try {
+        
         const {studentID, password} = request.body;
 
         const student = await Students.findOne({studentID});
+
         if(!student){
             return response.json({
                 error : "No user Found"
@@ -66,6 +72,7 @@ router.post('/login', async (request, response) => {
         const match = await comparePasswords(password,student.password)
 
         if(match){
+            
             return response.json("Welcome User") 
         }
 
