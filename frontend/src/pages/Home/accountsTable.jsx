@@ -4,7 +4,6 @@ import AccountsDetails from './accountsDetails';
 
 const accountsTable = ({ accounts }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
-    const [showModal, setShowModal] = useState(false);
     return (
         <table className='w-full border-separate border-spacing-2'>
             <thead>
@@ -40,9 +39,7 @@ const accountsTable = ({ accounts }) => {
                                 />
 
                              </div>
-                             {selectedAccount && selectedAccount._id === account._id && (
-                <AccountsDetails account={selectedAccount} onClose={() => setSelectedAccount(null)} />
-              )}
+                             
                         </td>
                     </tr>
                 ))}
