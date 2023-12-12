@@ -62,7 +62,7 @@ router.post('/login', async (request, response) => {
         const {studentID, password} = request.body;
 
         const student = await Students.findOne({studentID});
-
+        
         if(!student){
             return response.json({
                 error : "No user Found"
@@ -76,6 +76,7 @@ router.post('/login', async (request, response) => {
                 {
                     message: 'Welcome User',
                    userId: student._id, 
+                   userType: student.userType,
                   }
                   
             )

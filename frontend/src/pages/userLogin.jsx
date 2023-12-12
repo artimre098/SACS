@@ -23,14 +23,20 @@ function userLogin() {
             if(responseData.error){
                 toast.error(responseData.error)
             }else{
-              console.log("welcome user");
                setData({})
                toast.success('Login Successful. Welcome!')
                const userId = responseData.userId;
-               console.log(userId)
+               const userType = responseData.userType;
+              
                if (userId) {
-                // Navigate to the home page with the user's ID as a parameter
-                navigate(`/accounts/student/${userId}`);
+                if (userType === "user") {
+                  // Navigate to the home page with the user's ID as a parameter
+                  navigate(`/accounts/student/${userId}`);
+                } else if (userType === "admin") {
+                  console.log("ADMIN KA GAW");
+                } else {
+                  console.error('Invalid userType:', userType);
+                }
               } else {
                 console.error('User ID not found in the server response.');
               }
