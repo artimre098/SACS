@@ -11,6 +11,7 @@ function App() {
     <Routes>  
           <Route  path="/" element={<UserLogin />}/>
           <Route  path="/accounts/student/:studentId" element={<Home />}/>
+          
     </Routes>
     </>
   )
