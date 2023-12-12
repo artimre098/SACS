@@ -52,6 +52,7 @@ const calculateTotalBalance = (account) => {
 
 useEffect(() => {
     fetchData();
+    fetchStudentData();
     console.log({accounts})
 }, []);
 
