@@ -1,5 +1,6 @@
 import  express  from "express";
 import  { Students }  from '../models/StudentDetailModel.js';
+import  {Accounts}  from "../models/AccountModel.js"; 
 import bcrypt from 'bcrypt'
 
 const router = express.Router();
@@ -47,6 +48,7 @@ router.post('/', async (request, response) => {
             userType: request.body.userType,
         };
 
+        
         const student = await Students.create(newStudent);
 
         return response.status(201).send(student);

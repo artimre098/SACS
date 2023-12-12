@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import { BsInfoCircle } from "react-icons/bs"
-import AccountsDetails from './accountsDetails';
 
 const accountsTable = ({ accounts }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);

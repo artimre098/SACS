@@ -33,7 +33,7 @@ function userLogin() {
                   // Navigate to the home page with the user's ID as a parameter
                   navigate(`/accounts/student/${userId}`);
                 } else if (userType === "admin") {
-                  console.log("ADMIN KA GAW");
+                  navigate(`/students/${userId}`);
                 } else {
                   console.error('Invalid userType:', userType);
                 }
