@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { BsInfoCircle } from "react-icons/bs"
-
+import AccountDetails from './accountsDetails'
 const accountsTable = ({ accounts }) => {
     const [selectedAccount, setSelectedAccount] = useState(null);
     return (
@@ -38,7 +38,13 @@ const accountsTable = ({ accounts }) => {
                                 />
 
                              </div>
-                             
+                             {
+                                selectedAccount && selectedAccount._id === account._id  && (
+                                    <AccountDetails account={selectedAccount} onClose={()=>{
+                                        setSelectedAccount(null)
+                                    }} />
+                                )
+                             }
                         </td>
                     </tr>
                 ))}
