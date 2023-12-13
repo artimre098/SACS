@@ -35,7 +35,7 @@ const accountsDetails = ({ account, onClose }) => {
       }
     };
 
-    fetchData(); // Invoke the asynchronous function immediately
+    fetchData();
 
   }, [account]);
 

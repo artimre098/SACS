@@ -77,9 +77,14 @@ router.post('/', async (request, response) => {
 
 router.post('/pay/:accountId', async (request, response) => {
     try {
-        const { amountPaid , studentId} = request.body;
+        
+        const { accountAmount , myId} = request.body;
         const { accountId } = request.params;
-
+        
+        const amountPaid = accountAmount
+        
+        
+        
         // Validate if amountPaid is a positive number
         if (typeof amountPaid !== 'number' || amountPaid <= 0) {
             return response.status(400).send({ message: 'Invalid amountPaid value' });
@@ -87,9 +92,14 @@ router.post('/pay/:accountId', async (request, response) => {
 
         // Find the account by ID
         const account = await Accounts.findById(accountId);
+        console.log("---",account)
+        const studentId = myId;
         if (!account) {
+            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
             return response.status(404).send({ message: 'Account not found' });
         }
+
+        account.accountAmount -= amountPaid;
 
         // Update the account with the payment
         account.paymentHistory.push({
