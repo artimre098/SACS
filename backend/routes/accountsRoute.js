@@ -19,13 +19,14 @@ router.get('/', async (request, response) => {
 router.get('/student/:studentId', async (request, response) => {
     try {
         const { studentId } = request.params;
-        console.log(studentId)
+       // console.log(studentId)
         // Validate if studentId is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(studentId)) {
             return response.status(400).send({ message: 'Invalid studentId' });
         }
 
         const accountsForStudent = await Accounts.find({ studentId });
+    //    console.log(accountsForStudent)
         return response.status(200).send(accountsForStudent);
     } catch (error) {
         console.log(error.message);

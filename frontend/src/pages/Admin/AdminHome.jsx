@@ -39,7 +39,7 @@ const AdminHome = () => {
             <h1 className='text-3xl my-4 text-center font-bold text-blue-800'>Welcome  {fetchedStudent ? fetchedStudent.fullname : "No one"}
         </h1>
 
-            <StudentsTable students={students} myId={fetchStudent._id} />
+            <StudentsTable students={students} myId={studentId} />
 
         </div>
     )

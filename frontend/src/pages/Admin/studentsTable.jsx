@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { BsInfoCircle } from "react-icons/bs"
+import StudentPayment from './StudentPayment';
 
 const studentsTable = ({students, myId}) => {
     const [selectedStudent, setSelectedStudent] = useState(null);
@@ -39,7 +40,7 @@ const studentsTable = ({students, myId}) => {
                              </div>
                              {
                                 selectedStudent && selectedStudent._id === student._id  && (
-                                    <AccountDetails student={selectedStudent} myId={myId} onClose={()=>{
+                                    <StudentPayment student={selectedStudent} myId={myId} onClose={()=>{
                                         setSelectedStudent(null)
                                     }} />
                                 )
