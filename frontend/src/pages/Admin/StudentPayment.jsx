@@ -9,6 +9,7 @@ const StudentPayment = ({ student, myId, onClose }) => {
     useEffect(() => {
         const fetchData = async () => {
             const dropdown = document.getElementById('dropdown');
+            const amountDisplay = document.getElementById('amountDisplay');
             
 
             try {
@@ -24,6 +25,14 @@ const StudentPayment = ({ student, myId, onClose }) => {
                     option.text = account.accountName; // Replace with the property from your student data
                     dropdown.add(option);
                 });
+
+                dropdown.addEventListener('change', (event) => {
+                    const selectedAccountId = event.target.value;
+                    const selectedAccount = accountData.find(account => account._id === selectedAccountId);
+              
+                    // Update the amount display based on the selected student
+                    amountDisplay.textContent = `₱${selectedAccount.accountAmount}`;
+                  });
             } catch (error) {
                 console.error('Error fetching student data:', error);
             }
@@ -49,7 +58,7 @@ const StudentPayment = ({ student, myId, onClose }) => {
 
             </div>
             <div className='my-1'>
-              <label className='text-sm mr-4 text-gray-500'>Amount: <span className="text-2xl font-bold text-green-800">₱{accountAmount}</span></label>
+              <label className='text-sm mr-4 text-gray-500'>Amount: <span className="text-2xl font-bold text-green-800" id="amountDisplay"></span></label>
             </div>
             <div className='my-1'></div>
             {/* <div className='my-1'>
