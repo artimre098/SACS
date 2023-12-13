@@ -6,12 +6,17 @@ const StudentPayment = ({ student, myId, onClose }) => {
     const [accountId, setAccountId] = useState('');
     const [accountName, setAccountName] = useState('');
     const [accountAmount, setAccountAmount] = useState('');
-
+    const [selectedId,setSelectedId] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [proceeded, setProceeded] = useState(false);
 
     const handlePayClick = () => {
-        setShowConfirmation(true);
+        if (selectedId !== '') {
+            setShowConfirmation(true);
+          } else {
+           toast.error("Please select an account before proceeding with the payment.");
+           
+          }
     };
     const handleCancel = () => {
 
@@ -56,9 +61,13 @@ const StudentPayment = ({ student, myId, onClose }) => {
                 const accountData = response.data;
 
                 dropdown.innerHTML = '';
-
+                const filteredAccounts = accountData.filter(account => account.accountAmount !== 0);
+                const emptyOption = document.createElement('option');
+    emptyOption.value = ''; // Use an empty string as the value
+    emptyOption.text = 'Select an account'; // Replace with your desired text
+    dropdown.add(emptyOption);
                 // Create and append options to the dropdown
-                accountData.forEach(account => {
+                filteredAccounts.forEach(account => {
                     const option = document.createElement('option');
                     option.value = account._id; // Use a unique identifier for each option
                     option.text = account.accountName; // Replace with the property from your student data
@@ -68,7 +77,7 @@ const StudentPayment = ({ student, myId, onClose }) => {
                 dropdown.addEventListener('change', (event) => {
                     const selectedAccountId = event.target.value;
                     const selectedAccount = accountData.find(account => account._id === selectedAccountId);
-
+                    setSelectedId(selectedAccountId)
                     // Update the amount display based on the selected student
                     amountDisplay.textContent = `₱${selectedAccount.accountAmount}`;
                     setAccountId(selectedAccount._id)
