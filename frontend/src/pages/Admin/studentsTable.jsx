@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { BsInfoCircle } from "react-icons/bs"
 
-const studentsTable = ({students}) => {
+const studentsTable = ({students, myId}) => {
     const [selectedStudent, setSelectedStudent] = useState(null);
     return (
         <table className='w-full border-separate border-spacing-2'>
@@ -37,7 +37,13 @@ const studentsTable = ({students}) => {
                                 />
 
                              </div>
-                             
+                             {
+                                selectedStudent && selectedStudent._id === student._id  && (
+                                    <AccountDetails student={selectedStudent} myId={myId} onClose={()=>{
+                                        setSelectedStudent(null)
+                                    }} />
+                                )
+                             }
                         </td>
                     </tr>
                 ))}
