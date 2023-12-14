@@ -1,9 +1,8 @@
 import React,{useEffect, useState} from 'react'
-import {Bar} from 'react-chartjs-2'
+import {Pie} from 'react-chartjs-2'
 import { Chart as ChartJS} from 'chart.js/auto'
 
-const BarChart = ({accountData}) => {
-     
+const PieChart = ({accountData}) => {
     const [chartData, setChartData] = useState(null);
 
     useEffect(() => {
@@ -67,22 +66,27 @@ const BarChart = ({accountData}) => {
     }, [accountData]);
 
     const options = {
-        
         scales: {
-          y: {
-            beginAtZero: true,
+            x: { 
+              type: 'linear', // You can adjust the type based on your needs
+              position: 'bottom',
+            },
+            y: {
+              type: 'linear', // You can adjust the type based on your needs
+              position: 'left',
+            },
           },
-        },
+        
       };
     
       if (!chartData) {
         return <div>Loading...</div>; // Display a loading indicator while data is being fetched
       }
   return (
-  <div className='max-w-xl'>
-    <Bar data={chartData} options={options}/>
+    <div className='max-w-md'>
+    <Pie data={chartData} options={options}/>
     </div>
   )
 }
 
-export default BarChart
+export default PieChart

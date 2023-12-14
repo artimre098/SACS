@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import BarChart from './Components/BarChart'
 
 import axios from 'axios';
+import PieChart from './Components/PieChart';
 
 const CollectionReport = () => {
     const [accountData, setAccountData] = useState(null);
@@ -20,8 +21,9 @@ const CollectionReport = () => {
         
     }, []);
   return (
-    <div>
-        <div> <BarChart accountData={accountData}  /> </div>
+    <div className='flex'>
+        <div className="flex-1 p-4"> <BarChart accountData={accountData}  /> </div>
+        <div className="flex-1 p-4"> <PieChart accountData={accountData}  /> </div>
     </div>
     
   )
