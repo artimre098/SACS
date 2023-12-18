@@ -65,6 +65,7 @@ const StudentPayment = ({ student, myId, onClose }) => {
                 const emptyOption = document.createElement('option');
     emptyOption.value = ''; // Use an empty string as the value
     emptyOption.text = 'Select an account'; // Replace with your desired text
+    emptyOption.disabled = true;
     dropdown.add(emptyOption);
                 // Create and append options to the dropdown
                 filteredAccounts.forEach(account => {
