@@ -122,54 +122,38 @@ router.get('/:id', async (request, response) => {
     }
 });
 
-
 router.post('/bulk-insert', async (req, res) => {
     try {
-      const studentsToInsert = req.body;
-  
-      if (!Array.isArray(studentsToInsert)) {
-        return res.status(400).json({ success: false, message: 'Invalid data format. Expected an array.' });
-      }
-  
-      const batchSize = 5;
-      const limit = pLimit(batchSize);
-  
-      const processedBatches = await Promise.all(
+        const studentsToInsert = req.body;
         
-        Array.from({ length: Math.ceil(studentsToInsert.length / batchSize) }, (_, index) => {
-            
-            const startIndex = index * batchSize;
-          const endIndex = startIndex + batchSize;
-          const batch = studentsToInsert.slice(startIndex, endIndex);
-            
-          return limit(() => processBatch(batch));
-        })
-      );
-  
-      const result = processedBatches.flat(); // Flatten the array of batches
-  
-      res.status(201).json({ success: true, message: 'Students inserted successfully', result });
-    } catch (error) {
-      console.error('Error inserting students:', error);
-      res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
-    }
+
+        if (!Array.isArray(studentsToInsert)) {
+          return res.status(400).json({ success: false, message: 'Invalid data format. Expected an array.' });
+        }
+
+        const hashedStudents = await Promise.all(
+            studentsToInsert.map(async (student) => {
+              const hashedPassword = await hashPassword(student.studentID); // Assuming studentID is used for hashing
+              return {
+                studentID: student.studentID,
+                fullname: student.fullname,
+                password: hashedPassword,
+                email: student.email,
+                gender: student.gender,
+                yearLevel: student.yearLevel,
+                userType: student.userType,
+              };
+            })
+          );
+
+        const result = await Students.insertMany(hashedStudents);
+    
+        res.status(201).json({ success: true, message: 'Students inserted successfully', result });
+      } catch (error) {
+        console.error('Error inserting books:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+      }
   });
-  
-  async function processBatch(batch) {
-    return Promise.all(
-      batch.map(async (student) => {
-        const hashedPassword = await hashPassword(student.studentID);
-        return {
-          studentID: student.studentID,
-          fullname: student.fullname,
-          password: hashedPassword,
-          email: student.email,
-          gender: student.gender,
-          yearLevel: student.yearLevel,
-          userType: student.userType,
-        };
-      })
-    );
-  }
+
 
 export default router;

@@ -46,7 +46,7 @@ const AddStudents = () => {
       .then(() => {
 
 
-        toast.success("Payment Successful");
+        toast.success("Students Data Successfully Added");
 
 
       })

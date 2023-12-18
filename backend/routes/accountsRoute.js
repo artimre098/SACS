@@ -92,10 +92,10 @@ router.post('/pay/:accountId', async (request, response) => {
 
         // Find the account by ID
         const account = await Accounts.findById(accountId);
-        console.log("---",account)
+        
         const studentId = myId;
         if (!account) {
-            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+           
             return response.status(404).send({ message: 'Account not found' });
         }
 

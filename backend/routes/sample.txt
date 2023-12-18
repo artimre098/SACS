@@ -1,0 +1,58 @@
+// bulk - add with promise
+router.post('/bulk-insert', async (req, res) => {
+    try {
+      const studentsToInsert = req.body;
+  
+      if (!Array.isArray(studentsToInsert)) {
+        return res.status(400).json({ success: false, message: 'Invalid data format. Expected an array.' });
+      }
+  
+      const batchSize = 5;
+      const limit = pLimit(batchSize);
+  
+      const processedBatches = await Promise.all(
+        
+        Array.from({ length: Math.ceil(studentsToInsert.length / batchSize) }, (_, index) => {
+            
+          const startIndex = index * batchSize;
+          const endIndex = startIndex + batchSize;
+          const batch = studentsToInsert.slice(startIndex, endIndex);
+           
+          return limit(() => processBatch(batch));
+        })
+    
+      );
+  
+    // console.log(processedBatches,"-------------------");
+    
+      const result = await Students.insertMany(processedBatches);
+      res.status(201).json({ success: true, message: 'Students inserted successfully', result });
+    } catch (error) {
+      console.error('Error inserting students:', error);
+      res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    }
+  });
+  
+  async function processBatch(batch) {
+    try {
+        
+      return Promise.all(
+        
+        batch.map(async (student) => {
+          const hashedPassword = await hashPassword(student.studentID);
+          return {
+            studentID: student.studentID,
+            fullname: student.fullname,
+            password: hashedPassword,
+            email: student.email,
+            gender: student.gender,
+            yearLevel: student.yearLevel,
+            userType: student.userType,
+          };
+        })
+      );
+    } catch (error) {
+      console.error('Error processing batch:', error);
+      throw error; // Propagate the error to the calling function
+    }
+  }
